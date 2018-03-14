@@ -1,6 +1,8 @@
 package users;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import main.Demo;
@@ -16,7 +18,8 @@ public class User {
 	private boolean isLogged;
 	private boolean isAdmin;
 	
-	protected Set<Product> favourite;
+	private Set<Product> favourite;
+	private Map<products.Product, Integer> cart;
 	
 	public User() {}
 		
@@ -28,6 +31,7 @@ public class User {
 		this.number = number;
 		this.isAdmin = isAdmin;
 		this.favourite = new HashSet<>();
+		this.cart = new HashMap<>();
 		this.isLogged = false;
 	}
 
@@ -36,76 +40,98 @@ public class User {
 		for(User u : Demo.users) {
 			if(u.getEmail().equals(email)) {
 				if(u.getPassword().equals(password)) {
-					this.address = u.getAddress();
-					//TODO
+					copyData(u);
+					this.isLogged = true;
+					this.cart = new HashMap<>();
+					System.out.println("Welcome, " + this.getName());
+					return;
 				}
 			}
 		}
+		System.out.println("Wrong data or haven't register");
 	}
 	
-	public Set<Product> getFavourite() {
-		return favourite;
+	private void copyData(User user) {
+		this.name = user.getName();
+		this.address = user.getAddress();
+		this.email = user.getEmail();
+		this.password = user.getPassword();
+		this.number = user.getNumber();
+		this.isAdmin = user.getAdmin();
+		this.favourite = user.getFavourites();
+	}
+	
+	public void addToCart(Product product, int count) {
+		if (isLogged) {
+			if(Demo.availableProducts.get(product) >= count) {
+				this.cart.put(product, count);
+				Demo.availableProducts.put(product, Demo.availableProducts.get(product) - count);
+			}
+			else {
+				System.out.println("Sorry, not enough to order");
+			}
+		}
+		else {
+			System.out.println("Sorry, you're not logged. Please, login to order.");
+		}
+	}
+	
+	public void addProduct(Product product, int count) {
+		if (isLogged) {
+			if (isAdmin) {
+				if(Demo.availableProducts.get(product) == null) {
+					Demo.availableProducts.put(product, 0);
+				}
+				Demo.availableProducts.put(product, Demo.availableProducts.get(product) + count);
+			}
+			else {
+				System.out.println("Sorry, you're not an admin.");	
+			}
+		}
+		else {
+			System.out.println("Sorry, not logged.");
+		}
+	}
+	public void logout() {
+		this.isLogged = false;
+	}
+	public void viewProfile() {
+		if (isLogged) {
+			System.out.println(this);	
+		}
+		else {
+			System.out.println("Not logged.");
+		}
+	}
+	@Override
+	public String toString() {
+		return this.name  + " " + this.email + " " +isAdmin;
+	}
+	public Set<Product> getFavourites() {
+		return this.favourite;
 	}
 
-	public void setFavourite(Set<Product> favourite) {
-		this.favourite = favourite;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public String getAddress() {
-		return address;
+	public boolean getAdmin() {
+		return this.isAdmin;
 	}
 
 	public String getNumber() {
-		return number;
+		return this.number;
 	}
 
-	public boolean isLogged() {
-		return isLogged;
+	public String getAddress() {
+		return this.address;
 	}
 
-	public boolean isAdmin() {
-		return isAdmin;
+	public String getName() {
+		return this.name;
 	}
 
-	public void logout() {
-		
-	}
-	
 	public String getEmail() {
-		return email;
+		return this.email;
 	}
 	public String getPassword() {
-		return password;
-	}
-	public void setNumber(String number) {
-		this.number = number;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public void setLogged(boolean isLogged) {
-		this.isLogged = isLogged;
-	}
-
-	public void setAdmin(boolean isAdmin) {
-		this.isAdmin = isAdmin;
+		return this.password;
 	}
 
 	@Override
