@@ -1,11 +1,14 @@
 package users;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 import main.Demo;
+import order.Order;
 import products.Product;
 
 public class User {
@@ -18,8 +21,9 @@ public class User {
 	private boolean isLogged;
 	private boolean isAdmin;
 	
-	private Set<Product> favourite;
-	private Map<products.Product, Integer> cart;
+	private Set<Product> favourite = new HashSet();
+	private Map<products.Product, Integer> cart = new HashMap();
+	private ArrayList<Order> orderHistory = new ArrayList();
 	
 	public User() {}
 		
@@ -37,38 +41,38 @@ public class User {
 
 	
 	public void login(String email, String password) {
-		for(User u : Demo.users) {
-			if(u.getEmail().equals(email)) {
-				if(u.getPassword().equals(password)) {
-					copyData(u);
-					this.isLogged = true;
-					this.cart = new HashMap<>();
-					System.out.println("Welcome, " + this.getName());
-					return;
-				}
-			}
+		if(Demo.currentUser.isLogged) {
+			System.out.println("Already logged in!");
 		}
-		System.out.println("Wrong data or haven't register");
+		if(Demo.users.get(email) == null) {
+			System.out.println("No user registered with such email");
+			return;
+		}
+		if(Demo.users.get(email).checkPassword(password)) {
+			Demo.currentUser = Demo.users.get(email);
+			Demo.currentUser.setLogged(true);
+			return;
+		}
+		else {
+			System.out.println("Wrong password");
+		}
+		
+		
 	}
 	
-	private void copyData(User user) {
-		this.name = user.getName();
-		this.address = user.getAddress();
-		this.email = user.getEmail();
-		this.password = user.getPassword();
-		this.number = user.getNumber();
-		this.isAdmin = user.getAdmin();
-		this.favourite = user.getFavourites();
-	}
 	
 	public void addToCart(Product product, int count) {
 		if (isLogged) {
-			if(Demo.availableProducts.get(product) >= count) {
-				this.cart.put(product, count);
-				Demo.availableProducts.put(product, Demo.availableProducts.get(product) - count);
+			if(!Demo.availableProducts.containsKey(product)) {
+				System.out.println("Product is not listed in catalog");
 			}
 			else {
-				System.out.println("Sorry, not enough to order");
+				if(Demo.availableProducts.get(product) >= count) {
+					this.cart.put(product, count);
+				}
+				else {
+					System.out.println("Sorry, not enough to order");
+				}
 			}
 		}
 		else {
@@ -76,7 +80,7 @@ public class User {
 		}
 	}
 	
-	public void addProduct(Product product, int count) {
+	public void addProductToCatalog(Product product, int count) {
 		if (isLogged) {
 			if (isAdmin) {
 				if(Demo.availableProducts.get(product) == null) {
@@ -92,8 +96,26 @@ public class User {
 			System.out.println("Sorry, not logged.");
 		}
 	}
+	
+	public void makeOrder() {
+		Order order = new Order(this);
+		for(Map.Entry<Product, Integer> entry : this.cart.entrySet()) {
+			Demo.availableProducts.put(entry.getKey(), Demo.availableProducts.get(entry.getKey()) - entry.getValue());
+			order.addProduct(entry.getKey(), entry.getValue());
+		}
+		
+		this.cart = new HashMap();
+		
+		order.finalizeOrder();
+		this.orderHistory.add(order);
+	}
+	
+	public void addToFavorites(Product product) {
+		this.favourite.add(product);
+	}
+	
 	public void logout() {
-		this.isLogged = false;
+		Demo.currentUser = new User();
 	}
 	public void viewProfile() {
 		if (isLogged) {
@@ -103,15 +125,24 @@ public class User {
 			System.out.println("Not logged.");
 		}
 	}
+	
+	private boolean checkPassword(String password) {
+		return this.password.equals(password);
+	}
+	
+	public void setLogged(boolean logged) {
+		this.isLogged = logged;
+	}
+	
 	@Override
 	public String toString() {
-		return this.name  + " " + this.email + " " +isAdmin;
+		return this.name  + " " + this.email + " " + isAdmin + "\nOrder History:\n" + this.orderHistory;
 	}
 	public Set<Product> getFavourites() {
-		return this.favourite;
+		return Collections.unmodifiableSet(this.favourite);
 	}
 
-	public boolean getAdmin() {
+	public boolean isAdmin() {
 		return this.isAdmin;
 	}
 
@@ -130,33 +161,5 @@ public class User {
 	public String getEmail() {
 		return this.email;
 	}
-	public String getPassword() {
-		return this.password;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		User other = (User) obj;
-		if (email == null) {
-			if (other.email != null)
-				return false;
-		} else if (!email.equals(other.email))
-			return false;
-		return true;
-	}
-
+	
 }

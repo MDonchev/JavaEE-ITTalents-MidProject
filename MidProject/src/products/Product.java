@@ -18,7 +18,10 @@ public abstract class Product {
 		this.category = category;
 	}
 	
-	
+	@Override
+	public String toString() {
+		return this.name + " " + this.category;
+	}
 
 	@Override
 	public int hashCode() {

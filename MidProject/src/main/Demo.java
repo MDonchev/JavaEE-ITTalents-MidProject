@@ -11,24 +11,30 @@ import users.User;
 
 public class Demo {
 	
-	public static Set<User> users = new HashSet<>();
+	public static Map<String, User> users = new HashMap<>();
 	public static Map<Product, Integer> availableProducts = new HashMap<>();
+	public static User currentUser;
 	public static void main(String[] args) {
-		User user = new User();
-		user.addProduct(new Hookah("asdasd", 123.5, HookahSize.MEDIUM), 2);
-		user.addToCart(new Hookah("asdasd", 123.5, HookahSize.MEDIUM), 2);
-		user.login("asd@abv.bg", "12345");
-		register("Chocho", "12345", "asdasds", "asd@abv.bg", "0894567821", false);
-		register("Chocho2", "12345", "asdasds", "qwerty@abv.bg", "0894567821", true);
-		System.out.println(users);
-		user.login("qwerty@abv.bg", "12345");
-		System.out.println(user);
-		user.addProduct(new Hookah("asdasd", 123.5, HookahSize.MEDIUM), 2);
-		user.login("asd@abv.bg", "12345");
-		user.addToCart(new Hookah("asdasd", 123.5, HookahSize.MEDIUM), 1);
-		System.out.println(availableProducts);
-		user.addToCart(new Hookah("asdasd", 123.5, HookahSize.MEDIUM), 3);
-		System.out.println(availableProducts);
+		currentUser = new User();
+		currentUser.addProductToCatalog(new Hookah("Rashad", 124.5, HookahSize.MEDIUM), 3);
+		currentUser.addToCart(new Hookah("reer", 124.5, HookahSize.MEDIUM), 5);
+		currentUser.login("qwe@abv.bg", "123456");
+		register("araee", "123456", "ul.2", "qwe@abv.bg", "0883475671", false);
+		currentUser.login("qwe@abv.bg", "123456");
+		currentUser.addToCart(new Hookah("reer", 124.5, HookahSize.MEDIUM), 1);
+		register("eaaw", "qwerty", "smth.2", "admin@admin.com", "0812345678", true);
+		currentUser.login("admin@admin.com", "qwerty");
+		currentUser.logout();
+		currentUser.login("admin@admin.com", "qwerty");
+		currentUser.addProductToCatalog(new Hookah("Rashad", 124.5, HookahSize.MEDIUM), 3);
+		currentUser.addProductToCatalog(new Hookah("Abbot", 300.5, HookahSize.LARGE), 5);
+		currentUser.logout();
+		currentUser.login("qwe@abv.bg", "123456");
+		currentUser.addToCart(new Hookah("Rashad", 124.5, HookahSize.MEDIUM), 1);
+		currentUser.addToCart(new Hookah("Abbot", 300.5, HookahSize.LARGE), 3);
+		currentUser.makeOrder();
+		currentUser.viewProfile();
+		
 	}
 	
 	static void register(String name, String password, String address, String email, String number, boolean isAdmin) {
@@ -36,8 +42,9 @@ public class Demo {
 		User u = new User(name, address, email, password, number, isAdmin);
 		
 		if (validate(name,password,address,email,number)) {
-			if (!users.contains(u)) {
-				users.add(u);
+			if (!users.keySet().contains(email)) {
+				//users.add(u);
+				users.put(email, u);
 			}
 			else {
 				System.out.println("Can not registrate with this email. Already has registred user.");

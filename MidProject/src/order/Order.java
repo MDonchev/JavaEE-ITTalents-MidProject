@@ -19,16 +19,21 @@ public class Order {
 		this.orderedProducts = new HashMap();
 	}
 	
-	public void addProduct(Product product) {
+	public void addProduct(Product product, int count) {
 		if(!this.orderedProducts.containsKey(product)) {
 			this.orderedProducts.put(product, 0);
 		}
 		
-		this.orderedProducts.put(product, this.orderedProducts.get(product) + 1);
+		this.orderedProducts.put(product, this.orderedProducts.get(product) + count);
 	}
 	
 	public void finalizeOrder() {
 		this.dateAndTimeOfOrder = LocalDateTime.now();
+	}
+
+	@Override
+	public String toString() {
+		return this.orderedProducts.toString() + " Date and time: " + this.dateAndTimeOfOrder;
 	}
 	
 }
