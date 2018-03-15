@@ -1,6 +1,7 @@
 package order;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.Map;
 
 import products.Product;
@@ -14,10 +15,12 @@ public class Order {
 	
 	public Order(User buyer) {
 		this.buyer = buyer;
+		this.dateAndTimeOfOrder = LocalDateTime.now();
+		this.orderedProducts = new HashMap();
 	}
 	
 	public void addProduct(Product product) {
-		if(this.orderedProducts.get(product) == null) {
+		if(!this.orderedProducts.containsKey(product)) {
 			this.orderedProducts.put(product, 0);
 		}
 		
