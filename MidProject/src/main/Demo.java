@@ -7,15 +7,19 @@ import java.util.Set;
 import products.Hookah;
 import products.Hookah.HookahSize;
 import products.Product;
+import users.Admin;
+import users.Guest;
+import users.Member;
 import users.User;
 
 public class Demo {
 	
 	public static Map<String, User> users = new HashMap<>();
 	public static Map<Product, Integer> availableProducts = new HashMap<>();
-	public static User currentUser;
+	public static final User guest = new Guest("Guest");
+	public static User currentUser = Demo.guest;
 	public static void main(String[] args) {
-		currentUser = new User();
+		
 		currentUser.addProductToCatalog(new Hookah("Rashad", 124.5, HookahSize.MEDIUM), 3);
 		currentUser.addToCart(new Hookah("reer", 124.5, HookahSize.MEDIUM), 5);
 		currentUser.login("qwe@abv.bg", "123456");
@@ -34,17 +38,25 @@ public class Demo {
 		currentUser.addToCart(new Hookah("Abbot", 300.5, HookahSize.LARGE), 3);
 		currentUser.makeOrder();
 		currentUser.viewProfile();
-		
+		currentUser.logout();
+		currentUser.viewProfile();
+		currentUser.addToCart(new Hookah("Rashad", 124.5, HookahSize.MEDIUM), 1);
+		currentUser.login("qwe@abv.bg", "123456");
+		currentUser.logout();
+		System.out.println(currentUser.getCart());
 	}
 	
 	static void register(String name, String password, String address, String email, String number, boolean isAdmin) {
-		
-		User u = new User(name, address, email, password, number, isAdmin);
-		
+		// TODO : make it better; almost 1 A.M. and so sleepy -> making bullshits
 		if (validate(name,password,address,email,number)) {
 			if (!users.keySet().contains(email)) {
 				//users.add(u);
-				users.put(email, u);
+				if (isAdmin) {
+					users.put(email, new Admin(name, address, email, password, number));
+				}
+				else {
+					users.put(email, new Member(name, address, email, password, number));
+				}
 			}
 			else {
 				System.out.println("Can not registrate with this email. Already has registred user.");
