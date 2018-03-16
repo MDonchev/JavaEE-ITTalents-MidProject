@@ -11,37 +11,42 @@ import main.Demo;
 import order.Order;
 import products.Product;
 
-public class User {
+public abstract class User {
 	
 	private String name;
 	private String address;
 	private String email;
 	private String password;
 	private String number;
-	private boolean isLogged;
-	private boolean isAdmin;
+
+	private HashSet<Product> favourite = new HashSet<Product>();
+	protected HashMap<products.Product, Integer> cart = new HashMap<Product, Integer>();
+	private ArrayList<Order> orderHistory = new ArrayList<Order>();
 	
-	private Set<Product> favourite = new HashSet();
-	private Map<products.Product, Integer> cart = new HashMap();
-	private ArrayList<Order> orderHistory = new ArrayList();
+	public abstract void addProductToCatalog(Product product, int count);
+	public abstract boolean isAdmin();
+	public abstract void viewProfile();
+	public boolean isLogged() {
+		return true;
+	}
 	
-	public User() {}
-		
 	public User(String name, String address, String email, String password, String number, boolean isAdmin) {
+		
+		//TODO : make it better; almost 1 A.M. and so sleepy -> making bullshits
 		this.name = name;
 		this.address = address;
 		this.email = email;
 		this.password = password;
 		this.number = number;
-		this.isAdmin = isAdmin;
 		this.favourite = new HashSet<>();
 		this.cart = new HashMap<>();
-		this.isLogged = false;
 	}
 
 	
 	public void login(String email, String password) {
-		if(Demo.currentUser.isLogged) {
+		
+		// loginUser : TODO
+		if(Demo.currentUser.isLogged()) {
 			System.out.println("Already logged in!");
 		}
 		if(Demo.users.get(email) == null) {
@@ -50,7 +55,6 @@ public class User {
 		}
 		if(Demo.users.get(email).checkPassword(password)) {
 			Demo.currentUser = Demo.users.get(email);
-			Demo.currentUser.setLogged(true);
 			return;
 		}
 		else {
@@ -62,40 +66,22 @@ public class User {
 	
 	
 	public void addToCart(Product product, int count) {
-		if (isLogged) {
-			if(!Demo.availableProducts.containsKey(product)) {
-				System.out.println("Product is not listed in catalog");
-			}
-			else {
-				if(Demo.availableProducts.get(product) >= count) {
-					this.cart.put(product, count);
-				}
-				else {
-					System.out.println("Sorry, not enough to order");
-				}
-			}
+		
+		// TODO : tryToAdd -> Exception
+		if(!Demo.availableProducts.containsKey(product)) {
+			System.out.println("Product is not listed in catalog");
 		}
 		else {
-			System.out.println("Sorry, you're not logged. Please, login to order.");
+			if(Demo.availableProducts.get(product) >= count) {
+				this.cart.put(product, count);
+			}
+			else {
+				System.out.println("Sorry, not enough to order");
+			}
 		}
 	}
 	
-	public void addProductToCatalog(Product product, int count) {
-		if (isLogged) {
-			if (isAdmin) {
-				if(Demo.availableProducts.get(product) == null) {
-					Demo.availableProducts.put(product, 0);
-				}
-				Demo.availableProducts.put(product, Demo.availableProducts.get(product) + count);
-			}
-			else {
-				System.out.println("Sorry, you're not an admin.");	
-			}
-		}
-		else {
-			System.out.println("Sorry, not logged.");
-		}
-	}
+	
 	
 	public void makeOrder() {
 		Order order = new Order(this);
@@ -115,35 +101,20 @@ public class User {
 	}
 	
 	public void logout() {
-		Demo.currentUser = new User();
-	}
-	public void viewProfile() {
-		if (isLogged) {
-			System.out.println(this);	
-		}
-		else {
-			System.out.println("Not logged.");
-		}
+		Demo.currentUser = Demo.guest;
+		// TODO : currentUser : cart -> emptyCart
 	}
 	
 	private boolean checkPassword(String password) {
 		return this.password.equals(password);
 	}
 	
-	public void setLogged(boolean logged) {
-		this.isLogged = logged;
-	}
-	
 	@Override
 	public String toString() {
-		return this.name  + " " + this.email + " " + isAdmin + "\nOrder History:\n" + this.orderHistory;
+		return this.name  + " " + this.email + " " + isAdmin() + "\nOrder History:\n" + this.orderHistory;
 	}
 	public Set<Product> getFavourites() {
 		return Collections.unmodifiableSet(this.favourite);
-	}
-
-	public boolean isAdmin() {
-		return this.isAdmin;
 	}
 
 	public String getNumber() {
@@ -161,5 +132,7 @@ public class User {
 	public String getEmail() {
 		return this.email;
 	}
-	
+	public Map<products.Product, Integer> getCart() {
+		return cart;
+	}
 }
