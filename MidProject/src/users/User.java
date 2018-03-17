@@ -26,13 +26,12 @@ public abstract class User {
 	public abstract void addProductToCatalog(Product product, int count);
 	public abstract boolean isAdmin();
 	public abstract void viewProfile();
+	
 	public boolean isLogged() {
 		return true;
 	}
 	
 	public User(String name, String address, String email, String password, String number, boolean isAdmin) {
-		
-		//TODO : make it better; almost 1 A.M. and so sleepy -> making bullshits
 		this.name = name;
 		this.address = address;
 		this.email = email;
@@ -55,6 +54,7 @@ public abstract class User {
 		}
 		if(Demo.users.get(email).checkPassword(password)) {
 			Demo.currentUser = Demo.users.get(email);
+			System.out.println("Welcome, " + Demo.currentUser.getName());
 			return;
 		}
 		else {
@@ -90,7 +90,7 @@ public abstract class User {
 			order.addProduct(entry.getKey(), entry.getValue());
 		}
 		
-		this.cart = new HashMap();
+		this.cart = new HashMap<Product, Integer>();
 		
 		order.finalizeOrder();
 		this.orderHistory.add(order);
@@ -101,8 +101,11 @@ public abstract class User {
 	}
 	
 	public void logout() {
+		System.out.println("Bye, " + Demo.currentUser.getName());
 		Demo.currentUser = Demo.guest;
 		// TODO : currentUser : cart -> emptyCart
+		Demo.currentUser.emptyCart();
+		// current user : orderHistory -> new
 	}
 	
 	private boolean checkPassword(String password) {
@@ -132,7 +135,7 @@ public abstract class User {
 	public String getEmail() {
 		return this.email;
 	}
-	public Map<products.Product, Integer> getCart() {
-		return cart;
+	public void emptyCart() {
+		this.cart = new HashMap<>();
 	}
 }

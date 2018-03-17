@@ -2,7 +2,7 @@ package users;
 
 import products.Product;
 
-public class Guest extends User {
+public final class Guest extends User {
 
 	public Guest(String name) {
 		super(name, null, null, null, null, false);
@@ -31,5 +31,9 @@ public class Guest extends User {
 	@Override
 	public void viewProfile() {
 		System.out.println("Not logged.");
+	}
+	@Override
+	public void addToFavorites(Product product) {
+		System.out.println("You're guest. Please login.");
 	}
 }

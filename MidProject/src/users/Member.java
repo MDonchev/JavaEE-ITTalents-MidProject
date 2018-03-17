@@ -2,7 +2,7 @@ package users;
 
 import products.Product;
 
-public class Member extends User {
+public final class Member extends User {
 
 	public Member(String name, String address, String email, String password, String number) {
 		super(name, address, email, password, number, false);
