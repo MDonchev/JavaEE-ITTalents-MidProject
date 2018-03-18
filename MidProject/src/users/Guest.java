@@ -1,6 +1,10 @@
 package users;
 
+import java.util.ArrayList;
+import java.util.Scanner;
+
 import customExceptions.LoginException;
+import customExceptions.RegistrationException;
 import main.Demo;
 import products.Product;
 
@@ -45,6 +49,40 @@ public final class Guest extends User {
 		if(Demo.users.get(email) == null) throw new LoginException("No user registered with such email");
 		if(!Demo.users.get(email).checkPassword(password)) throw new LoginException("Wrong password!!!");
 		
+	}
+	
+	@Override
+	public void makeOrder() {
+		try {
+			this.initializeAccountInfo();
+			super.makeOrder();
+			this.orderHistory = new ArrayList();
+		}
+		catch (RegistrationException e) {
+			System.out.println("Email or phone number are of invalid format");
+		}
+	}
+	
+	//asks for console input of the mandatory account info
+	//required to make an order
+	public void initializeAccountInfo() throws RegistrationException {
+		if(this.email == null || this.number == null) {
+			Scanner scanner = new Scanner(System.in);
+			System.out.println("Input email for guest user:");
+			String email = scanner.nextLine();
+			System.out.println("Input phone number for guest user:");
+			String phone = scanner.nextLine();
+			if(validate.Validation.mailValidation(email) && validate.Validation.numberValidation(phone)) {
+				this.email = email;
+				this.number = phone;
+			}
+			else {
+				throw new RegistrationException("Invalid email, try again");
+			}
+		}
+		else {
+			System.out.println("Guest info is initialized");
+		}
 	}
 	
 }
