@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import customExceptions.LoginException;
+import customExceptions.OrderException;
 import main.Demo;
 import order.Order;
 import products.Product;
@@ -26,10 +28,9 @@ public abstract class User {
 	public abstract void addProductToCatalog(Product product, int count);
 	public abstract boolean isAdmin();
 	public abstract void viewProfile();
+	protected abstract void tryLoginUser(String email, String password) throws LoginException;
 	
-	public boolean isLogged() {
-		return true;
-	}
+	public abstract boolean isLogged();
 	
 	public User(String name, String address, String email, String password, String number, boolean isAdmin) {
 		this.name = name;
@@ -43,44 +44,34 @@ public abstract class User {
 
 	
 	public void login(String email, String password) {
-		
-		// loginUser : TODO
-		if(Demo.currentUser.isLogged()) {
-			System.out.println("Already logged in!");
-		}
-		if(Demo.users.get(email) == null) {
-			System.out.println("No user registered with such email");
-			return;
-		}
-		if(Demo.users.get(email).checkPassword(password)) {
+		try {
+			tryLoginUser(email, password);
 			Demo.currentUser = Demo.users.get(email);
 			System.out.println("Welcome, " + Demo.currentUser.getName());
-			return;
+			
+		} catch (LoginException e) {
+			System.out.println(e.getMessage());
 		}
-		else {
-			System.out.println("Wrong password");
-		}
-		
-		
 	}
 	
 	
 	public void addToCart(Product product, int count) {
-		
-		// TODO : tryToAdd -> Exception
-		if(!Demo.availableProducts.containsKey(product)) {
-			System.out.println("Product is not listed in catalog");
-		}
-		else {
-			if(Demo.availableProducts.get(product) >= count) {
-				this.cart.put(product, count);
-			}
-			else {
-				System.out.println("Sorry, not enough to order");
-			}
+		try {
+			tryToAddToCart(product, count);
+			this.cart.put(product, count);
+		} catch (OrderException e) {
+			System.out.println(e.getMessage());
 		}
 	}
-	
+	private void tryToAddToCart(Product product, int count) throws OrderException{
+
+		if(!Demo.availableProducts.containsKey(product)) {
+			throw new OrderException("Product is not listed in the catalog!!!");
+		}
+		if(!(Demo.availableProducts.get(product) >= count)) {
+			throw new OrderException("Sorry, not enough to order!!!");
+		}
+	}
 	
 	
 	public void makeOrder() {
@@ -103,12 +94,11 @@ public abstract class User {
 	public void logout() {
 		System.out.println("Bye, " + Demo.currentUser.getName());
 		Demo.currentUser = Demo.guest;
-		// TODO : currentUser : cart -> emptyCart
 		Demo.currentUser.emptyCart();
 		// current user : orderHistory -> new
 	}
 	
-	private boolean checkPassword(String password) {
+	protected boolean checkPassword(String password) {
 		return this.password.equals(password);
 	}
 	
