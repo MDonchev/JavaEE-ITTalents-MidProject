@@ -1,9 +1,8 @@
 package main;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
+import customExceptions.RegistrationException;
 import products.Hookah;
 import products.Hookah.HookahSize;
 import products.Product;
@@ -27,16 +26,19 @@ public class Demo {
 		currentUser.addProductToCatalog(new Hookah("Rashad", 124.5, HookahSize.MEDIUM), 3);
 		currentUser.addToCart(new Hookah("reer", 124.5, HookahSize.MEDIUM), 5);
 		currentUser.login("qwe@abv.bg", "123456");
+		register("Member", "M123-aZ", "ul.2", "qwe@abv.bg", "0883475671", false);
 		register("araee", "M123-aZ", "ul.2", "qwe@abv.bg", "0883475671", false);
 		currentUser.login("qwe@abv.bg", "M123-aZ");
 		currentUser.addToCart(new Hookah("reer", 124.5, HookahSize.MEDIUM), 1);
 		currentUser.logout();
-		register("eaaw", "M123-aZ", "smth.2", "admin@admin.com", "0812345678", true);
+		register("Admin", "M123-aZ", "smth.2", "admin@admin.com", "0812345678", true);
 		currentUser.login("admin@admin.com", "M123-aZ");
 		currentUser.addProductToCatalog(new Hookah("Rashad", 124.5, HookahSize.MEDIUM), 3);
 		currentUser.addProductToCatalog(new Hookah("Abbot", 300.5, HookahSize.LARGE), 5);
 		currentUser.logout();
 		currentUser.login("qwe@abv.bg", "M123-aZ");
+		currentUser.login("admin@admin.com", "M123-aZ"); // -> already logged.
+
 		currentUser.addToCart(new Hookah("Rashad", 124.5, HookahSize.MEDIUM), 1);
 		currentUser.addToCart(new Hookah("Abbot", 300.5, HookahSize.LARGE), 3);
 		currentUser.makeOrder();
@@ -50,22 +52,17 @@ public class Demo {
 	}
 	
 	private static void register(String name, String password, String address, String email, String number, boolean isAdmin) {
-		
-		if (validate(name,password,address,email,number)) {
-			if (!users.keySet().contains(email)) {
-				if (isAdmin) {
-					users.put(email, new Admin(name, address, email, password, number));
-				}
-				else {
-					users.put(email, new Member(name, address, email, password, number));
-				}
+		try {
+			tryRegistrateUser(name, password, address, email, number);
+			if (isAdmin) {
+				users.put(email, new Admin(name, address, email, password, number));
 			}
 			else {
-				System.out.println("Can not registrate with this email. Already has registred user.");
+				users.put(email, new Member(name, address, email, password, number));
 			}
 		}
-		else {
-			System.out.println("Invalid data.");
+		catch (RegistrationException e) {
+			System.out.println(e.getMessage());
 		}
 	}
 
@@ -75,5 +72,14 @@ public class Demo {
 				Validation.stringValidation(address) &&
 				Validation.mailValidation(email) &&
 				Validation.numberValidation(number);
+	}
+	private static void tryRegistrateUser(String name, String password, String address, String email, String number) throws RegistrationException {
+		
+		if (!validate(name, password, address, email, number)) {
+			throw new RegistrationException("Invalid data passed.");
+		}
+		if (users.containsKey(email)) {
+			throw new RegistrationException("Already registred user with these e-mail. Put another");
+		}
 	}
 }
