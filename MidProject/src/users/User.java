@@ -17,13 +17,13 @@ public abstract class User {
 	
 	private String name;
 	private String address;
-	private String email;
+	protected String email;
 	private String password;
-	private String number;
+	protected String number;
 
 	private HashSet<Product> favourite = new HashSet<Product>();
 	protected HashMap<products.Product, Integer> cart = new HashMap<Product, Integer>();
-	private ArrayList<Order> orderHistory = new ArrayList<Order>();
+	protected ArrayList<Order> orderHistory = new ArrayList<Order>();
 	
 	public abstract void addProductToCatalog(Product product, int count);
 	public abstract boolean isAdmin();
@@ -95,7 +95,6 @@ public abstract class User {
 		System.out.println("Bye, " + Demo.currentUser.getName());
 		Demo.currentUser = Demo.guest;
 		Demo.currentUser.emptyCart();
-		// current user : orderHistory -> new
 	}
 	
 	protected boolean checkPassword(String password) {
