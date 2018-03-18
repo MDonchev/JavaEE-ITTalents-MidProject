@@ -48,6 +48,10 @@ public class Demo {
 		currentUser.addToCart(new Hookah("Rashad", 124.5, HookahSize.MEDIUM), 1);
 		currentUser.login("qwe@abv.bg", "123456");
 		currentUser.logout();
+		
+		currentUser.addToCart(new Hookah("Rashad", 124.5, HookahSize.MEDIUM), 1);
+		currentUser.makeOrder();//input required, guest user info initialization is mandatory for order
+		currentUser.viewProfile();
 
 	}
 	
