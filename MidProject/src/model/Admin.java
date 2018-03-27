@@ -1,8 +1,7 @@
-package users;
+package model;
 
 import customExceptions.LoginException;
 import main.Demo;
-import products.Product;
 
 public final class Admin extends User {
 

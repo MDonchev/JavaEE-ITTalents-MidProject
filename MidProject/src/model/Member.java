@@ -1,7 +1,6 @@
-package users;
+package model;
 
 import customExceptions.LoginException;
-import products.Product;
 
 public final class Member extends User {
 

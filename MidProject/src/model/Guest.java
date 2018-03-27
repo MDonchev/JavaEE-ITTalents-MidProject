@@ -1,4 +1,4 @@
-package users;
+package model;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -6,7 +6,6 @@ import java.util.Scanner;
 import customExceptions.LoginException;
 import customExceptions.RegistrationException;
 import main.Demo;
-import products.Product;
 
 public final class Guest extends User {
 
