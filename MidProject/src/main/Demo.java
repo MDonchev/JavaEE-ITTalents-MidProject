@@ -3,13 +3,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import customExceptions.RegistrationException;
-import products.Hookah;
-import products.Hookah.HookahSize;
-import products.Product;
-import users.Admin;
-import users.Guest;
-import users.Member;
-import users.User;
+import model.Admin;
+import model.Guest;
+import model.Hookah;
+import model.Member;
+import model.Product;
+import model.User;
+import model.Hookah.HookahSize;
 import validate.Validation;
 
 public class Demo {
