@@ -1,4 +1,4 @@
-package products;
+package model;
 
 public abstract class Product {
 

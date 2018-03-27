@@ -1,4 +1,4 @@
-package users;
+package model;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,8 +10,6 @@ import java.util.Set;
 import customExceptions.LoginException;
 import customExceptions.OrderException;
 import main.Demo;
-import order.Order;
-import products.Product;
 
 public abstract class User {
 	
@@ -22,7 +20,7 @@ public abstract class User {
 	protected String number;
 
 	private HashSet<Product> favourite = new HashSet<Product>();
-	protected HashMap<products.Product, Integer> cart = new HashMap<Product, Integer>();
+	protected HashMap<model.Product, Integer> cart = new HashMap<Product, Integer>();
 	protected ArrayList<Order> orderHistory = new ArrayList<Order>();
 	
 	public abstract void addProductToCatalog(Product product, int count);
