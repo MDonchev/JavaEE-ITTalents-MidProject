@@ -9,7 +9,6 @@ import java.util.Set;
 
 import customExceptions.LoginException;
 import customExceptions.OrderException;
-import main.Demo;
 
 public class User {
 	
@@ -19,32 +18,22 @@ public class User {
 	private String password;
 	protected String number;
 
-	private HashSet<Product> favourite = new HashSet<Product>();
-	protected HashMap<model.Product, Integer> cart = new HashMap<Product, Integer>();
-	protected ArrayList<Order> orderHistory = new ArrayList<Order>();
+	private Set<Product> favourite = new HashSet<Product>();
+	private Map<model.Product, Integer> cart = new HashMap<Product, Integer>();
+	private ArrayList<Order> orderHistory = new ArrayList<Order>();
 	
 	
-	public User(String name, String address, String email, String password, String number, boolean isAdmin) {
+	public User(String name, String address, String email, String password, String number, Set<Product> favourites, Map<Product, Integer> cart, ArrayList<Order> orders) {
 		this.name = name;
 		this.address = address;
 		this.email = email;
 		this.password = password;
 		this.number = number;
-		this.favourite = new HashSet<>();
-		this.cart = new HashMap<>();
+		this.favourite = favourites;
+		this.cart = cart;
+		this.orderHistory = orders;
 	}
 
-	
-	public void login(String email, String password) {
-		try {
-			
-			Demo.currentUser = Demo.users.get(email);
-			System.out.println("Welcome, " + Demo.currentUser.getName());
-			
-		} catch (LoginException e) {
-			System.out.println(e.getMessage());
-		}
-	}
 	
 	
 	public void addToCart(Product product, int count) {
@@ -95,7 +84,7 @@ public class User {
 	
 	@Override
 	public String toString() {
-		return this.name  + " " + this.email + " " + isAdmin() + "\nOrder History:\n" + this.orderHistory;
+		return this.name  + " " + this.email + " "  + "\nOrder History:\n" + this.orderHistory;
 	}
 	public Set<Product> getFavourites() {
 		return Collections.unmodifiableSet(this.favourite);
@@ -115,6 +104,9 @@ public class User {
 
 	public String getEmail() {
 		return this.email;
+	}
+	public String getPassword() {
+		return this.password;
 	}
 	public void emptyCart() {
 		this.cart = new HashMap<>();

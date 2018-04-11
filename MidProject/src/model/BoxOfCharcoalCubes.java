@@ -8,8 +8,8 @@ public class BoxOfCharcoalCubes extends Product {
 	
 	private NumberOfPieces quantity;
 	
-	public BoxOfCharcoalCubes(String name, double price, NumberOfPieces quantity) {
-		super(name, price, Product.Category.BOX_OF_CHARCOAL_CUBES);
+	public BoxOfCharcoalCubes(String name, String desc, double price, NumberOfPieces quantity) {
+		super(name, desc, price, Product.Category.BOX_OF_CHARCOAL_CUBES);
 		this.quantity = quantity;
 	}
 	

@@ -1,8 +1,15 @@
 package controller.manager;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import customExceptions.LoginException;
+import customExceptions.RegistrationException;
+import model.Order;
 import model.Product;
 import model.User;
 import model.dao.UserDao;
@@ -34,6 +41,24 @@ public class UserManager implements IUserManager{
 		return null;
 	}
 
+	public boolean register (String name, String email, String address, String password, String number) {
+		User u = null;
+		try {
+			Set<Product> fav = new HashSet<Product>();
+			Map<Product, Integer> cart = new HashMap<Product, Integer>();
+			ArrayList<Order> ord = new ArrayList<Order>();
+			u = new User(name,address, email, password, number, fav, cart, ord);
+			this.userDao.saveUser(u);
+			return true;
+		}
+		catch (SQLException | RegistrationException e) {
+			//TODO handle exception
+			return false;
+		}
+	}
+	
+	
+	
 	@Override
 	public void addProductToCatalog(Product product, int count) {
 		// TODO Auto-generated method stub

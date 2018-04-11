@@ -8,8 +8,8 @@ public class Tobacco extends Product {
 	
 	private TobaccoFlavor flavor;
 	
-	public Tobacco(String name, double price, TobaccoFlavor flavor) {
-		super(name, price, Product.Category.TOBACCO);
+	public Tobacco(String name, String desc, double price, TobaccoFlavor flavor) {
+		super(name, desc, price, Product.Category.TOBACCO);
 		this.flavor = flavor;
 	}
 	

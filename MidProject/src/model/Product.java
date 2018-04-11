@@ -11,9 +11,9 @@ public abstract class Product {
 	private double price;
 	private Category category;
 	
-	public Product(String name, double price, Category category) {
+	public Product(String name, String desc, double price, Category category) {
 		this.name = name;
-		this.description = "";
+		this.description = desc;
 		this.price = price;
 		this.category = category;
 	}

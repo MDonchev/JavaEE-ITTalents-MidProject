@@ -6,11 +6,10 @@ public class Hookah extends Product {
 		SMALL, MEDIUM, LARGE;
 	}
 	
-	private int numberOfHoses;
 	private HookahSize size;
 	
-	public Hookah(String name, double price, HookahSize size) {
-		super(name, price, Product.Category.HOOKAH);
+	public Hookah(String name, String desc, double price, HookahSize size) {
+		super(name, desc, price, Product.Category.HOOKAH);
 		this.size = size;
 	}
 }
