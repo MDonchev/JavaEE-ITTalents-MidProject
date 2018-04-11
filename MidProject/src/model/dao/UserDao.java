@@ -1,36 +1,33 @@
 package model.dao;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
+import controller.manager.DBManager;
+import customExceptions.LoginException;
 import model.User;
 
-public class UserDao {
-
-	List<User> allUsersInDb; //It is as if this is our database for Users
+public final class UserDao implements IUserDao{
 	
-	public UserDao() {
-		this.allUsersInDb = new ArrayList();
-	}
+	private static UserDao instance;
+	private Connection connection = DBManager.getInstance().getConnection();
 	
-	public List<User> getAllUsers() {
-		return Collections.unmodifiableList(this.allUsersInDb);
-	}
-
-	public void insertUser(User user) {
-		if(!this.allUsersInDb.contains(user)) {
-			this.allUsersInDb.add(user);
+	
+	public static synchronized UserDao getInstance() {
+		if(instance == null) {
+			instance = new UserDao();
 		}
+		return instance;
 	}
 
-	public void updateUser(User user) {
-		// TODO Auto-generated method stub
 
+	@Override
+	public User getUserFromLogin(String username, String password) throws SQLException, LoginException{
+		//TODO
+		
+		
+		return null;
 	}
-
-	public void deleteUser(User user) {
-		this.allUsersInDb.remove(user);
-	}
-	
 }

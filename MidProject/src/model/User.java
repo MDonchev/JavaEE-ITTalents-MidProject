@@ -11,7 +11,7 @@ import customExceptions.LoginException;
 import customExceptions.OrderException;
 import main.Demo;
 
-public abstract class User {
+public class User {
 	
 	private String name;
 	private String address;
@@ -23,12 +23,6 @@ public abstract class User {
 	protected HashMap<model.Product, Integer> cart = new HashMap<Product, Integer>();
 	protected ArrayList<Order> orderHistory = new ArrayList<Order>();
 	
-	public abstract void addProductToCatalog(Product product, int count);
-	public abstract boolean isAdmin();
-	public abstract void viewProfile();
-	protected abstract void tryLoginUser(String email, String password) throws LoginException;
-	
-	public abstract boolean isLogged();
 	
 	public User(String name, String address, String email, String password, String number, boolean isAdmin) {
 		this.name = name;
@@ -43,7 +37,7 @@ public abstract class User {
 	
 	public void login(String email, String password) {
 		try {
-			tryLoginUser(email, password);
+			
 			Demo.currentUser = Demo.users.get(email);
 			System.out.println("Welcome, " + Demo.currentUser.getName());
 			
