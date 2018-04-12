@@ -41,13 +41,13 @@ public class UserManager implements IUserManager{
 		return null;
 	}
 
-	public boolean register (String name, String email, String address, String password, String number) {
+	public boolean register (String name, String email, String address, String password, String number, double balance) {
 		User u = null;
 		try {
 			Set<Product> fav = new HashSet<Product>();
 			Map<Product, Integer> cart = new HashMap<Product, Integer>();
 			ArrayList<Order> ord = new ArrayList<Order>();
-			u = new User(name,address, email, password, number, fav, cart, ord);
+			u = new User(name,address, email, password, number, balance, fav, cart, ord);
 			this.userDao.saveUser(u);
 			return true;
 		}
