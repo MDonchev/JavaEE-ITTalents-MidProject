@@ -1,28 +1,39 @@
 package controller.manager;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Map;
 
 import model.Order;
 import model.Product;
+import model.User;
+import model.dao.OrderDao;
+import model.dao.UserDao;
 
 public class OrderManager {
-
-	private Order model;
 	
-	public OrderManager(Order model) {
-		this.model = model;
-	}
+	private volatile static OrderManager instance;
+	private OrderDao orderDao = OrderDao.getInstance();
 	
-	public void addProductToOrder(Product product, int count) {
-		Map<Product, Integer> modelProducts = this.model.getOrderedProducts();
-		if(!modelProducts.containsKey(product)) {
-			modelProducts.put(product, 0);
+	private OrderManager() {}
+	
+	public synchronized static OrderManager getManager() {
+		if (instance == null) {
+			instance = new OrderManager();
 		}
-		modelProducts.put(product, modelProducts.get(product) + count);
+		return instance;
 	}
 	
-	public void finalizeOrder() {
-		this.model.setDateAndTimeOfOrder(LocalDateTime.now());
+	public void addProductToOrder(Order order, Product product, int count, LocalDateTime dateTime) {
+		Map<Product, Integer> orders = order.getOrderedProducts();
+		if(!orders.containsKey(product)) {
+			orders.put(product, 0);
+		}
+		orders.put(product, orders.get(product) + count);
+	}
+	
+	public void finalizeOrder(Order order, User user) {
+		order.setDateOfOrder(LocalDate.now());
+		orderDao.
 	}
 }
