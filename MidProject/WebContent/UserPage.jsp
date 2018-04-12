@@ -9,7 +9,7 @@
 <body>
 
 	<center>
-		<h3>Здравей, <%= request.getParameter("username")%></h3>		
+		<h3>Здравей, <%= request.getParameter("username")%> </h3>		
 	</center>
 	
 	<form action="LogoutServlet" method="post" style="float:right;">

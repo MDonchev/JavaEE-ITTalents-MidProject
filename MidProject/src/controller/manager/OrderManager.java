@@ -32,6 +32,7 @@ public class OrderManager {
 		orders.put(product, orders.get(product) + count);
 	}
 	
+
 	public void finalizeOrder(Order order, User user) {
 		order.setDateOfOrder(LocalDate.now());
 	}

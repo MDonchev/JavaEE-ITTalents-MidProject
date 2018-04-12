@@ -7,7 +7,14 @@
 <title>NargileMag.bg</title>
 </head>
 <body>
-	<h1>Welcome to Nargilemag.bg</h1>
-	
+	<center>	
+		<form action="LoginForm.html">
+			<h1>Welcome to Nargilemag.bg</h1>
+			<input type='submit' value='Login' />
+		</form>
+		<form action="RegistrationForm.html">
+			<input type='submit' value='Register' />
+		</form>
+	</center>
 </body>
 </html>
