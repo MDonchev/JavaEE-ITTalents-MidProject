@@ -6,10 +6,16 @@ public abstract class Product {
 		HOOKAH, TOBACCO, BOX_OF_CHARCOAL_CUBES;
 	}
 	
+	private int productId;
 	private String name;
 	private String description;
 	private double price;
 	private Category category;
+	
+	public Product(int productId, String name, String desc, double price, Category category) {
+		this(name, desc, price, category);
+		this.productId = productId;
+	}
 	
 	public Product(String name, String desc, double price, Category category) {
 		this.name = name;
@@ -76,6 +82,10 @@ public abstract class Product {
 		return category;
 	}
 
+	public int getProductId() {
+		return productId;
+	}
+	
 	public void setCategory(Category category) {
 		this.category = category;
 	}

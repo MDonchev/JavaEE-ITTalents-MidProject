@@ -25,7 +25,9 @@ public class ProductDao {
 		return instance;
 	}
 	
-	public List<Product> getAllProducts() {
+	public List<Product> getAllProductsUploadedByUserId(int uploaderId) {
+		
+		
 		return Collections.EMPTY_LIST;
 	}
 	

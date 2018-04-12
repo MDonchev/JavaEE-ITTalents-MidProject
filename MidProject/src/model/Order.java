@@ -19,6 +19,10 @@ public class Order {
 		this.dateOfOrder = dateOfOrder;
 	}
 
+	public LocalDate getDateOfOrder() {
+		return dateOfOrder;
+	}
+	
 	public Map<Product, Integer> getOrderedProducts() {
 		return orderedProducts;
 	}

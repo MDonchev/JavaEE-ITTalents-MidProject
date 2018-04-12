@@ -2,8 +2,10 @@ package controller.manager;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -47,13 +49,39 @@ public class UserManager implements IUserManager{
 			Set<Product> fav = new HashSet<Product>();
 			Map<Product, Integer> cart = new HashMap<Product, Integer>();
 			ArrayList<Order> ord = new ArrayList<Order>();
-			u = new User(name,address, email, password, number, balance, fav, cart, ord);
+			u = new User(name, address, email, password, number, balance, fav, cart, ord);
 			this.userDao.saveUser(u);
 			return true;
 		}
 		catch (SQLException | RegistrationException e) {
 			//TODO handle exception
 			return false;
+		}
+	}
+	
+	public void addProductToCart(User user, Product product, int count) {
+		Map<Product, Integer> userCart = user.getCart();
+		if(!userCart.containsKey(product)) {
+			userCart.put(product, 0);
+		}
+		userCart.put(product, userCart.get(product) + count);
+	}
+	
+	public void addToFavorites(User user, Product product) {
+		user.getFavourites().add(product);
+		try {
+			userDao.addProductToFavoritesByIds(user.getUserId(), product.getProductId());
+		}
+		catch (SQLException e) {
+			// TODO: handle exception
+		}
+	}
+	
+	public List<Product> getAllOrderedProducts(User user) {
+		try {
+			return userDao.getAllOrderedProductsById(user.getUserId());
+		} catch (SQLException e) {
+			return Collections.EMPTY_LIST;
 		}
 	}
 	
