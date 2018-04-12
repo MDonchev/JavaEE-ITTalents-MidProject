@@ -14,6 +14,7 @@ import model.Hookah;
 import model.Order;
 import model.Product;
 import model.Tobacco;
+import model.User;
 import model.BoxOfCharcoalCubes.NumberOfPieces;
 import model.Hookah.HookahSize;
 import model.Tobacco.TobaccoFlavor;
@@ -62,8 +63,11 @@ public class OrderDao {
 		
 	}
 	
-	public void insertOrder(Order order) {
-//		String sql = "INSERT INTO ordres";
+	public void insertOrder(Order order, User user) throws SQLException {
+		String sql = "INSERT INTO orders (date_of_issue, user_id) VALUES (?, ?)";
+		try(PreparedStatement ps = connection.prepareStatement(sql);){
+			ps.setDate(1, java.sql.Date(order.getDateOfOrder()));
+		}
 	}
 
 	public void updateOrder(Order order) {

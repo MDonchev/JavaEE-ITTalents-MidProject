@@ -73,7 +73,8 @@ public final class UserDao implements IUserDao{
 				ArrayList<Order> orders = new ArrayList<Order>(getOrdersById(userId));
 				
 				
-				user = new User(rs.getString("username"),
+				user = new User(rs.getInt("id"),
+								rs.getString("username"),
 								rs.getString("address"),
 								rs.getString("email"),
 								rs.getString("password"),
@@ -106,13 +107,14 @@ public final class UserDao implements IUserDao{
 				break;
 			}
 			
+			ps.executeUpdate();
+			
 		}
 	}
 
 	private ArrayList<Order> getOrdersById(int userId) throws SQLException{
 		ArrayList<Order> orders = new ArrayList();
 		
-		//orders.add(new Order(dateAndTimeOfOrder, orderedProducts));
 		String allOrderDatesOfUserQuery = "SELECT date_of_issue FROM orders WHERE user_id = ?";
 		try(PreparedStatement ps = connection.prepareStatement(allOrderDatesOfUserQuery);){
 			ps.setInt(1, userId);
@@ -162,10 +164,19 @@ public final class UserDao implements IUserDao{
 		return orders;
 	}
 	
+	public void addProductToFavoritesByIds(int userId, int productId) throws SQLException {
+		User user = null;
+		String sql = "INSERT INTO users_have_favorite_products (users_id, products_id) VALUES (?, ?)";
+		
+		try(PreparedStatement ps = connection.prepareStatement(sql);){
+			ps.setInt(1, userId);
+			ps.setInt(2, productId);
+			ps.executeUpdate();
+		}
+	}
+	
 	public ArrayList<Product> getAllOrderedProductsById(int userId) throws SQLException {
 		ArrayList<Product> ordered = new ArrayList<>();
-		
-		// TODO
 		
 		String sql = "SELECT name, description, price, category, hookah_size, tobacco_flavor, number_of_cubes "
 					 + "FROM orders o "
