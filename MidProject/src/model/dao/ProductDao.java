@@ -10,7 +10,10 @@ import java.util.List;
 import java.util.Locale.Category;
 
 import controller.manager.DBManager;
+import model.BoxOfCharcoalCubes;
+import model.Hookah;
 import model.Product;
+import model.Tobacco;
 import model.User;
 
 public class ProductDao {
@@ -27,14 +30,50 @@ public class ProductDao {
 		return instance;
 	}
 	
-	public void insertProduct(Product product, User user) throws SQLException {
+	public void insertHookah(Hookah hookah, User user) throws SQLException {
 		String sql = "INSERT INTO products (name, description, price, category, hookah_size, tobacco_flavor, number_of_cubes, users_id) "
 					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 		try(PreparedStatement ps = connection.prepareStatement(sql)){
-			ps.setString(1, product.getName());
-			ps.setString(2, product.getDescription());
-			ps.setFloat(3, (float)product.getPrice());
-			ps.setString(4, product.getCategory().name());
+			ps.setString(1, hookah.getName());
+			ps.setString(2, hookah.getDescription());
+			ps.setFloat(3, (float)hookah.getPrice());
+			ps.setString(4, hookah.getCategory().name());
+			ps.setString(5, hookah.getSize().name());
+			ps.setString(6, null);
+			ps.setString(7, null);
+			ps.setInt(8, user.getUserId());
+			
+		}
+	}
+	
+	public void insertTobacco(Tobacco tobacco, User user) throws SQLException {
+		String sql = "INSERT INTO products (name, description, price, category, hookah_size, tobacco_flavor, number_of_cubes, users_id) "
+					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+		try(PreparedStatement ps = connection.prepareStatement(sql)){
+			ps.setString(1, tobacco.getName());
+			ps.setString(2, tobacco.getDescription());
+			ps.setFloat(3, (float)tobacco.getPrice());
+			ps.setString(4, tobacco.getCategory().name());
+			ps.setString(5, null);
+			ps.setString(6, tobacco.getFlavor().name());
+			ps.setString(7, null);
+			ps.setInt(8, user.getUserId());
+			
+		}
+	}
+	
+	public void insertBoxOfCharcoalCubes(BoxOfCharcoalCubes box, User user) throws SQLException {
+		String sql = "INSERT INTO products (name, description, price, category, hookah_size, tobacco_flavor, number_of_cubes, users_id) "
+					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+		try(PreparedStatement ps = connection.prepareStatement(sql)){
+			ps.setString(1, box.getName());
+			ps.setString(2, box.getDescription());
+			ps.setFloat(3, (float)box.getPrice());
+			ps.setString(4, box.getCategory().name());
+			ps.setString(5, null);
+			ps.setString(6, null);
+			ps.setString(7, box.getNumber().name());
+			ps.setInt(8, user.getUserId());
 			
 		}
 	}
