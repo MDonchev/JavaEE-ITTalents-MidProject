@@ -1,28 +1,34 @@
 package model.dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale.Category;
 
+import controller.manager.DBManager;
 import model.Product;
 
 public class ProductDao {
 
-	List<Product> productsInDb; //It is as if this is our database for Products
+	private static ProductDao instance;
+	private Connection connection = DBManager.getInstance().getConnection();
 	
-	public ProductDao() {
-		this.productsInDb = new ArrayList();
+	private ProductDao() {}
+	
+	public static synchronized ProductDao getInstance() {
+		if(instance == null) {
+			instance = new ProductDao();
+		}
+		return instance;
 	}
 	
 	public List<Product> getAllProducts() {
-		return Collections.unmodifiableList(this.productsInDb);
+		return Collections.EMPTY_LIST;
 	}
-
-	public void insertProduct(Product product) {
-		if(!this.productsInDb.contains(product)) {
-			this.productsInDb.add(product);
-		}
-	}
+	
 
 	public void updateProduct(Product product) {
 		// TODO Auto-generated method stub
@@ -30,7 +36,7 @@ public class ProductDao {
 	}
 
 	public void deleteProduct(Product product) {
-		this.productsInDb.remove(product);
+		
 	}
 
 }
