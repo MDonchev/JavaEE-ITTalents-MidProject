@@ -7,7 +7,12 @@
 <title>NargileMag.bg</title>
 </head>
 <body>
-	<h1>Welcome to Nargilemag.bg</h1>
-	
+
+	<center>
+		<h1>Welcome to Nargilemag.bg</h1>
+		<form action="LoginForm.jsp">
+			<input >
+		</form>
+	</center>
 </body>
 </html>

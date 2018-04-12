@@ -15,7 +15,7 @@ public class Order {
 		this.orderedProducts = orderedProducts;
 	}
 	
-	public void setDateAndTimeOfOrder(LocalDate dateOfOrder) {
+	public void setDateOfOrder(LocalDate dateOfOrder) {
 		this.dateOfOrder = dateOfOrder;
 	}
 

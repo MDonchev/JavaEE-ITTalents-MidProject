@@ -7,5 +7,5 @@ import model.Product;
 
 public interface IUserManager {
 
-	boolean register(String name, String email, String address, String password, String number);
+	boolean register(String name, String email, String address, String password, String number, double balance);
 }

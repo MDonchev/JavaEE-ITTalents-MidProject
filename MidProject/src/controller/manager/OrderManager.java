@@ -1,5 +1,6 @@
 package controller.manager;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Map;
 
@@ -23,6 +24,6 @@ public class OrderManager {
 	}
 	
 	public void finalizeOrder() {
-		this.model.setDateAndTimeOfOrder(LocalDateTime.now());
+		this.model.setDateOfOrder(LocalDate.now());
 	}
 }
