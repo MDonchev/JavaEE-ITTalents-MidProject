@@ -92,7 +92,7 @@ public final class UserDao implements IUserDao{
 	@Override
 	public void insertProductByUserId(int userId, Product product, HookahSize size, TobaccoFlavor flavor, NumberOfPieces number) throws SQLException {
 		String sql = "INSERT INTO products (name, description, price, category, hookah_size, tobacco_flavor, number_of_cubes, users_id) "
-				     + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+				     + "VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 		try(PreparedStatement ps = connection.prepareStatement(sql);){
 			ps.setString(1, product.getName());
 			ps.setString(2, product.getDescription());
@@ -115,7 +115,7 @@ public final class UserDao implements IUserDao{
 	private ArrayList<Order> getOrdersById(int userId) throws SQLException{
 		ArrayList<Order> orders = new ArrayList();
 		
-		String allOrderDatesOfUserQuery = "SELECT date_of_issue FROM orders WHERE user_id = ?";
+		String allOrderDatesOfUserQuery = "SELECT date_of_issue FROM orders WHERE user_id = ?;";
 		try(PreparedStatement ps = connection.prepareStatement(allOrderDatesOfUserQuery);){
 			ps.setInt(1, userId);
 			
@@ -127,7 +127,7 @@ public final class UserDao implements IUserDao{
 						String allOrderedProductsFromUserOnGivenDateQuery = "SELECT name, description, price, category, hookah_size, tobacco_flavor, number_of_cubes "
 																			+ "FROM users u JOIN orders o ON u.id = o.user_id "
 																			+ "JOIN products p ON o.id = orders_id "
-																			+ "WHERE o.date_of_issue = ? AND u.id = ?";
+																			+ "WHERE o.date_of_issue = ? AND u.id = ?;";
 						try(PreparedStatement ps1 = connection.prepareStatement(allOrderedProductsFromUserOnGivenDateQuery);){
 							ps1.setDate(1, dateOfIssue);
 							ps1.setInt(2, userId);
@@ -166,7 +166,7 @@ public final class UserDao implements IUserDao{
 	
 	public void addProductToFavoritesByIds(int userId, int productId) throws SQLException {
 		User user = null;
-		String sql = "INSERT INTO users_have_favorite_products (users_id, products_id) VALUES (?, ?)";
+		String sql = "INSERT INTO users_have_favorite_products (users_id, products_id) VALUES (?, ?);";
 		
 		try(PreparedStatement ps = connection.prepareStatement(sql);){
 			ps.setInt(1, userId);
@@ -181,7 +181,7 @@ public final class UserDao implements IUserDao{
 		String sql = "SELECT name, description, price, category, hookah_size, tobacco_flavor, number_of_cubes "
 					 + "FROM orders o "
 					 + "JOIN products p ON o.id = p.orders_id "
-					 + "WHERE o.user_id = ?";
+					 + "WHERE o.user_id = ?;";
 		try(PreparedStatement ps = connection.prepareStatement(sql);){
 			ps.setInt(1, userId);
 			
@@ -242,7 +242,7 @@ public final class UserDao implements IUserDao{
 	public synchronized void saveUser(User u) throws SQLException, RegistrationException {
 		tryRegistrateUser(u);
 		
-		String sql = "INSERT INTO users (username,email,password,address,phone_number) VALUES (?,?,?,?,?);";
+		String sql = "INSERT INTO users (username,email,password,address,phone_number,balance) VALUES (?,?,?,?,?,?);";
 		
 		PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 		ps.setString(1, u.getName());
@@ -250,7 +250,7 @@ public final class UserDao implements IUserDao{
 		ps.setString(3, u.getPassword());
 		ps.setString(4, u.getAddress());
 		ps.setString(5, u.getNumber());
-		
+		ps.setFloat(6, (float)u.getBalance());
 		
 	}
 	

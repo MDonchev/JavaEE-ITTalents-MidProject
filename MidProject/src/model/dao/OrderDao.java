@@ -1,6 +1,7 @@
 package model.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -64,9 +65,28 @@ public class OrderDao {
 	}
 	
 	public void insertOrder(Order order, User user) throws SQLException {
-		String sql = "INSERT INTO orders (date_of_issue, user_id) VALUES (?, ?)";
-		try(PreparedStatement ps = connection.prepareStatement(sql);){
-			ps.setDate(1, java.sql.Date(order.getDateOfOrder()));
+		String sql = "INSERT INTO orders (date_of_issue, user_id) VALUES (?, ?);";
+		try {
+			connection.setAutoCommit(false);
+			try(PreparedStatement ps = connection.prepareStatement(sql);){
+				ps.setDate(1, Date.valueOf(order.getDateOfOrder()));
+				ps.setInt(2, user.getUserId());
+				ps.executeUpdate();
+			}
+			for(Product product : order.getOrderedProducts().keySet()) {
+				sql = "UPDATE products SET orders_id = ?";
+				try(PreparedStatement ps1 = connection.prepareStatement(sql);){
+					ps1.setInt(1, product.getProductId());
+					ps1.executeUpdate();
+				}
+			}
+			connection.commit();
+		}
+		catch (Exception e) {
+			connection.rollback();
+		}
+		finally {
+			connection.setAutoCommit(true);
 		}
 	}
 

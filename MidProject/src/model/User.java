@@ -115,6 +115,9 @@ public class User {
 		return this.name;
 	}
 
+	public double getBalance() {
+		return balance;
+	}
 	public String getEmail() {
 		return this.email;
 	}
