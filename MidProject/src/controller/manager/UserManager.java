@@ -54,7 +54,7 @@ public class UserManager implements IUserManager{
 			return true;
 		}
 		catch (SQLException | RegistrationException e) {
-			//TODO handle exception
+			System.out.println(e.getMessage());
 			return false;
 		}
 	}
