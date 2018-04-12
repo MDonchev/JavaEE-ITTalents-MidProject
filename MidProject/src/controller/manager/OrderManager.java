@@ -34,6 +34,5 @@ public class OrderManager {
 	
 	public void finalizeOrder(Order order, User user) {
 		order.setDateOfOrder(LocalDate.now());
-		orderDao.
 	}
 }
