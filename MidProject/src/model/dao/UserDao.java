@@ -242,15 +242,17 @@ public final class UserDao implements IUserDao{
 	public synchronized void saveUser(User u) throws SQLException, RegistrationException {
 		tryRegistrateUser(u);
 		
-		String sql = "INSERT INTO users (username,email,password,address,phone_number,balance) VALUES (?,?,?,?,?,?);";
+		String sql = "INSERT INTO users (username,email,password,balance,address,phone_number) VALUES (?,?,?,?,?,?)";
 		
 		PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 		ps.setString(1, u.getName());
 		ps.setString(2, u.getEmail());
 		ps.setString(3, u.getPassword());
-		ps.setString(4, u.getAddress());
-		ps.setString(5, u.getNumber());
-		ps.setFloat(6, (float)u.getBalance());
+		ps.setFloat(4, (float)u.getBalance());
+		ps.setString(5, u.getAddress());
+		ps.setString(6, u.getNumber());
+		
+		ps.executeUpdate();
 		
 	}
 	
