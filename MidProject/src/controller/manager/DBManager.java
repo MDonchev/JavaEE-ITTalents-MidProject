@@ -23,10 +23,15 @@ public class DBManager {
 	}
 	
 	private DBManager() {
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			System.out.println("Sorry, Driver not loaded or does not exist! Aborting.");
+			return;
+		}
 		//create connection
 		try {
 			connection = DriverManager.getConnection("jdbc:mysql://"+DB_IP+":"+DB_PORT+"/" + DB_NAME, DB_USER, DB_PASS);
-		
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
