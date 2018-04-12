@@ -12,4 +12,8 @@ public class Hookah extends Product {
 		super(name, desc, price, Product.Category.HOOKAH);
 		this.size = size;
 	}
+	
+	public HookahSize getSize() {
+		return size;
+	}
 }

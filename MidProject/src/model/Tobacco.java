@@ -13,6 +13,8 @@ public class Tobacco extends Product {
 		this.flavor = flavor;
 	}
 	
-	
+	public TobaccoFlavor getFlavor() {
+		return flavor;
+	}
 	
 }

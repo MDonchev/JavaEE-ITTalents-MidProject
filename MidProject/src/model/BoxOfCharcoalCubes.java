@@ -13,4 +13,8 @@ public class BoxOfCharcoalCubes extends Product {
 		this.quantity = quantity;
 	}
 	
+	public NumberOfPieces getNumber() {
+		return quantity;
+	}
+	
 }
