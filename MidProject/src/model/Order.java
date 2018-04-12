@@ -1,23 +1,22 @@
 package model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Order {
 
-	private User buyer;
-	private LocalDateTime dateAndTimeOfOrder;
+	private LocalDate dateOfOrder;
 	private Map<Product, Integer> orderedProducts;
 	
-	public Order(User buyer) {
-		this.buyer = buyer;
-		this.dateAndTimeOfOrder = LocalDateTime.now();
-		this.orderedProducts = new HashMap();
+	public Order(LocalDate dateOfOrder, Map<Product, Integer> orderedProducts) {
+		this.dateOfOrder = dateOfOrder;
+		this.orderedProducts = orderedProducts;
 	}
-
-	public void setDateAndTimeOfOrder(LocalDateTime dateAndTimeOfOrder) {
-		this.dateAndTimeOfOrder = dateAndTimeOfOrder;
+	
+	public void setDateAndTimeOfOrder(LocalDate dateOfOrder) {
+		this.dateOfOrder = dateOfOrder;
 	}
 
 	public Map<Product, Integer> getOrderedProducts() {

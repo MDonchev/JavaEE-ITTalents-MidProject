@@ -17,18 +17,20 @@ public class User {
 	protected String email;
 	private String password;
 	protected String number;
+	private double balance;
 
 	private Set<Product> favourite = new HashSet<Product>();
 	private Map<model.Product, Integer> cart = new HashMap<Product, Integer>();
 	private ArrayList<Order> orderHistory = new ArrayList<Order>();
 	
 	
-	public User(String name, String address, String email, String password, String number, Set<Product> favourites, Map<Product, Integer> cart, ArrayList<Order> orders) {
+	public User(String name, String address, String email, String password, String number, double balance, Set<Product> favourites, Map<Product, Integer> cart, ArrayList<Order> orders) {
 		this.name = name;
 		this.address = address;
 		this.email = email;
 		this.password = password;
 		this.number = number;
+		this.balance = balance;
 		this.favourite = favourites;
 		this.cart = cart;
 		this.orderHistory = orders;
