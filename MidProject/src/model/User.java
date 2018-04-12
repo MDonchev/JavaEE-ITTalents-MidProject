@@ -12,6 +12,7 @@ import customExceptions.OrderException;
 
 public class User {
 	
+	private int userId;
 	private String name;
 	private String address;
 	protected String email;
@@ -24,6 +25,11 @@ public class User {
 	private ArrayList<Order> orderHistory = new ArrayList<Order>();
 	
 	
+	public User(int userId, String name, String address, String email, String password, String number, double balance, Set<Product> favourites, Map<Product, Integer> cart, ArrayList<Order> orders) {
+		this(name, address, email, password, number, balance, favourites, cart, orders);
+		this.userId = userId;
+	}
+
 	public User(String name, String address, String email, String password, String number, double balance, Set<Product> favourites, Map<Product, Integer> cart, ArrayList<Order> orders) {
 		this.name = name;
 		this.address = address;
@@ -35,7 +41,7 @@ public class User {
 		this.cart = cart;
 		this.orderHistory = orders;
 	}
-
+	
 	/*
 	
 	public void addToCart(Product product, int count) {
@@ -93,6 +99,10 @@ public class User {
 		return Collections.unmodifiableSet(this.favourite);
 	}
 
+	public Map<model.Product, Integer> getCart() {
+		return cart;
+	}
+	
 	public String getNumber() {
 		return this.number;
 	}
@@ -110,6 +120,9 @@ public class User {
 	}
 	public String getPassword() {
 		return this.password;
+	}
+	public int getUserId() {
+		return userId;
 	}
 	public void emptyCart() {
 		this.cart = new HashMap<>();

@@ -15,10 +15,14 @@ public class Order {
 		this.orderedProducts = orderedProducts;
 	}
 	
-	public void setDateAndTimeOfOrder(LocalDate dateOfOrder) {
+	public void setDateOfOrder(LocalDate dateOfOrder) {
 		this.dateOfOrder = dateOfOrder;
 	}
 
+	public LocalDate getDateOfOrder() {
+		return dateOfOrder;
+	}
+	
 	public Map<Product, Integer> getOrderedProducts() {
 		return orderedProducts;
 	}
