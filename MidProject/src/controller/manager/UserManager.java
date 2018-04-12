@@ -57,23 +57,4 @@ public class UserManager implements IUserManager{
 		}
 	}
 	
-	
-	
-	@Override
-	public void addProductToCatalog(Product product, int count) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void viewProfile() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void tryLoginUser(String email, String password) throws LoginException {
-		// TODO Auto-generated method stub
-		
-	}
 }

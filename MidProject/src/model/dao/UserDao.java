@@ -77,7 +77,7 @@ public final class UserDao implements IUserDao{
 								rs.getString("address"),
 								rs.getString("email"),
 								rs.getString("password"),
-								rs.getString("number"),
+								rs.getString("phone_number"),
 								rs.getDouble("balance"),
 								favs,
 								new HashMap<Product,Integer>(),

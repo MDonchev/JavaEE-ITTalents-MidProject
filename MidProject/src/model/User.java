@@ -36,7 +36,7 @@ public class User {
 		this.orderHistory = orders;
 	}
 
-	
+	/*
 	
 	public void addToCart(Product product, int count) {
 		try {
@@ -46,6 +46,7 @@ public class User {
 			System.out.println(e.getMessage());
 		}
 	}
+	
 	private void tryToAddToCart(Product product, int count) throws OrderException{
 
 		if(!Demo.availableProducts.containsKey(product)) {
@@ -82,7 +83,7 @@ public class User {
 	
 	protected boolean checkPassword(String password) {
 		return this.password.equals(password);
-	}
+	}*/
 	
 	@Override
 	public String toString() {
